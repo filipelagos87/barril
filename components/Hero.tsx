@@ -33,8 +33,8 @@ export default function Hero({ config }: { config: SiteConfig }) {
           {config.hero_subheadline}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="#cardapio" className="btn-primary">
-            Ver cardápio
+          <Link href="/cardapio" className="btn-primary">
+            Ver cardápio completo
           </Link>
           {whatsapp && (
             <a
