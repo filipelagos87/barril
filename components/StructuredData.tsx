@@ -1,8 +1,8 @@
-import type { ConfigMap } from '@/lib/types'
+import type { SiteConfig } from '@/lib/types'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://barrilchopperia.com.br'
 
-export default function StructuredData({ config }: { config: ConfigMap }) {
+export default function StructuredData({ config }: { config: SiteConfig }) {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
@@ -12,7 +12,7 @@ export default function StructuredData({ config }: { config: ConfigMap }) {
       'Boteco tradicional no Shopping Sul (Bancários, João Pessoa) — chopp estupidamente gelado e tábuas de carne, sem cobrar 10% de taxa.',
     url: SITE_URL,
     image: `${SITE_URL}/images/hero/barril.jpeg`,
-    telephone: config.telefone_link ?? '+558332550101',
+    telephone: config.telefone_link,
     priceRange: 'R$',
     servesCuisine: ['Brasileira', 'Boteco', 'Petiscos'],
     address: {
@@ -23,7 +23,7 @@ export default function StructuredData({ config }: { config: ConfigMap }) {
       postalCode: '58051-255',
       addressCountry: 'BR',
     },
-    sameAs: config.instagram_url ? [config.instagram_url] : undefined,
+    sameAs: [config.instagram_url],
     openingHours: ['Mo-Th 10:00-21:00', 'Fr-Su 11:00-22:00'],
     acceptsReservations: false,
   }

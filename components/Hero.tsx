@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronDown, MessageCircle } from 'lucide-react'
-import type { ConfigMap } from '@/lib/types'
+import type { SiteConfig } from '@/lib/types'
 
-export default function Hero({ config }: { config: ConfigMap }) {
-  const whatsapp = config.whatsapp_link ?? ''
+export default function Hero({ config }: { config: SiteConfig }) {
+  const whatsapp = config.whatsapp_link
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-bone overflow-hidden">
       <Image

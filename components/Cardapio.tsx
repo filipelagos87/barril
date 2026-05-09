@@ -1,13 +1,7 @@
-import type { Categoria, Item } from '@/lib/types'
+import type { Categoria } from '@/lib/types'
 import CardapioInteractive from './CardapioInteractive'
 
-export default function Cardapio({
-  categorias,
-  itens,
-}: {
-  categorias: Categoria[]
-  itens: Item[]
-}) {
+export default function Cardapio({ categorias }: { categorias: Categoria[] }) {
   return (
     <section id="cardapio" className="bg-cream py-20 md:py-28">
       <div className="container-tight">
@@ -18,13 +12,7 @@ export default function Cardapio({
             Tábuas, petiscos, chopp e drinks — preços sem taxa de serviço.
           </p>
         </header>
-        {categorias.length === 0 ? (
-          <p className="text-center text-ink/50 py-12">
-            O cardápio está sendo carregado. Volte em instantes.
-          </p>
-        ) : (
-          <CardapioInteractive categorias={categorias} itens={itens} />
-        )}
+        <CardapioInteractive categorias={categorias} />
       </div>
     </section>
   )

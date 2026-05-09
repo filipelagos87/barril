@@ -5,41 +5,38 @@ import { Search, Star } from 'lucide-react'
 import { formatPrice } from '@/lib/format'
 import type { Categoria, Item } from '@/lib/types'
 
-export default function CardapioInteractive({
-  categorias,
-  itens,
-}: {
-  categorias: Categoria[]
-  itens: Item[]
-}) {
+type ItemComCat = Item & { categoriaSlug: string; categoriaNome: string }
+
+export default function CardapioInteractive({ categorias }: { categorias: Categoria[] }) {
   const [ativa, setAtiva] = useState<string>(categorias[0]?.slug ?? '')
   const [busca, setBusca] = useState('')
 
-  const itensPorCategoria = useMemo(() => {
-    const map = new Map<string, Item[]>()
-    for (const cat of categorias) map.set(cat.slug, [])
-    for (const item of itens) {
-      const cat = categorias.find((c) => c.id === item.categoria_id)
-      if (!cat) continue
-      map.get(cat.slug)?.push(item)
-    }
-    return map
-  }, [categorias, itens])
+  const todosOsItens = useMemo<ItemComCat[]>(
+    () =>
+      categorias.flatMap((c) =>
+        c.itens.map((item) => ({
+          ...item,
+          categoriaSlug: c.slug,
+          categoriaNome: c.nome,
+        }))
+      ),
+    [categorias]
+  )
 
   const buscaTrim = busca.trim().toLowerCase()
   const buscando = buscaTrim.length > 0
 
-  const itensVisiveis = useMemo(() => {
+  const itensVisiveis = useMemo<ItemComCat[]>(() => {
     if (buscando) {
-      return itens.filter(
+      return todosOsItens.filter(
         (i) =>
           i.nome.toLowerCase().includes(buscaTrim) ||
           (i.descricao ?? '').toLowerCase().includes(buscaTrim) ||
           (i.codigo ?? '').toLowerCase().includes(buscaTrim)
       )
     }
-    return itensPorCategoria.get(ativa) ?? []
-  }, [buscando, buscaTrim, itens, itensPorCategoria, ativa])
+    return todosOsItens.filter((i) => i.categoriaSlug === ativa)
+  }, [buscando, buscaTrim, todosOsItens, ativa])
 
   return (
     <div>
@@ -59,7 +56,7 @@ export default function CardapioInteractive({
             const ativo = !buscando && cat.slug === ativa
             return (
               <button
-                key={cat.id}
+                key={cat.slug}
                 onClick={() => {
                   setBusca('')
                   setAtiva(cat.slug)
@@ -79,8 +76,7 @@ export default function CardapioInteractive({
 
       {buscando && (
         <p className="text-center text-sm text-ink/60 mt-6">
-          {itensVisiveis.length} resultado{itensVisiveis.length === 1 ? '' : 's'} para "
-          {busca}"
+          {itensVisiveis.length} resultado{itensVisiveis.length === 1 ? '' : 's'} para "{busca}"
         </p>
       )}
 
@@ -91,7 +87,7 @@ export default function CardapioInteractive({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {itensVisiveis.map((item) => (
               <article
-                key={item.id}
+                key={`${item.categoriaSlug}-${item.codigo ?? item.nome}`}
                 className="bg-bone border border-ink/10 rounded-lg p-4 shadow-sm hover:shadow-md hover:border-gold/40 transition-all"
               >
                 <div className="flex items-start justify-between gap-3">
@@ -101,6 +97,11 @@ export default function CardapioInteractive({
                         <Star className="w-3 h-3 fill-current" /> Pedida da casa
                       </span>
                     )}
+                    {buscando && (
+                      <p className="text-[10px] uppercase tracking-wider text-ink/40 mb-1">
+                        {item.categoriaNome}
+                      </p>
+                    )}
                     <h3 className="font-display tracking-wide text-lg leading-tight">
                       {item.nome}
                     </h3>
@@ -108,9 +109,7 @@ export default function CardapioInteractive({
                       <p className="text-sm text-ink/70 mt-1">{item.descricao}</p>
                     )}
                     {item.codigo && (
-                      <p className="text-[11px] text-ink/40 mt-2 font-mono">
-                        cód. {item.codigo}
-                      </p>
+                      <p className="text-[11px] text-ink/40 mt-2 font-mono">cód. {item.codigo}</p>
                     )}
                   </div>
                   <p className="font-mono text-lg font-bold text-amber whitespace-nowrap">

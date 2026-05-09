@@ -1,38 +1,38 @@
-export type Categoria = {
-  id: string
+export type Item = {
+  codigo?: string
   nome: string
-  slug: string
-  descricao: string | null
-  ordem: number
-  ativo: boolean
-  banner_url: string | null
+  descricao?: string
+  preco: number
+  destaque?: boolean
 }
 
-export type Item = {
-  id: string
-  categoria_id: string
-  codigo: string | null
+export type Categoria = {
+  slug: string
   nome: string
-  descricao: string | null
-  preco: number
-  foto_url: string | null
-  ordem: number
-  ativo: boolean
-  destaque: boolean
+  descricao?: string
+  itens: Item[]
 }
 
 export type Foto = {
-  id: string
-  url: string
-  legenda: string | null
-  ordem: number
-  ativo: boolean
+  src: string
+  alt?: string
 }
 
-export type ConfigEntry = {
-  chave: string
-  valor: string
-  tipo: 'string' | 'text' | 'url' | 'json'
+export type SiteConfig = {
+  hero_headline: string
+  hero_subheadline: string
+  hero_badge: string
+  historia_titulo: string
+  historia_paragrafos: string
+  historia_video_url: string
+  endereco: string
+  horario_funcionamento: string
+  telefone: string
+  telefone_link: string
+  whatsapp: string
+  whatsapp_link: string
+  instagram_url: string
+  instagram_handle: string
+  mapa_embed_url: string
+  google_maps_url: string
 }
-
-export type ConfigMap = Record<string, string>

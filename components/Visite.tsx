@@ -1,8 +1,8 @@
 import { Clock, Instagram, MapPin, MessageCircle, Phone } from 'lucide-react'
-import type { ConfigMap } from '@/lib/types'
+import type { SiteConfig } from '@/lib/types'
 
-export default function Visite({ config }: { config: ConfigMap }) {
-  const horarios = (config.horario_funcionamento ?? '').split('\n').filter(Boolean)
+export default function Visite({ config }: { config: SiteConfig }) {
+  const horarios = config.horario_funcionamento.split('\n').filter(Boolean)
   return (
     <section id="visite" className="bg-ink text-bone py-20 md:py-28">
       <div className="container-tight">
@@ -54,34 +54,28 @@ export default function Visite({ config }: { config: ConfigMap }) {
             )}
 
             <div className="flex flex-wrap gap-3 pt-2">
-              {config.whatsapp_link && (
-                <a
-                  href={`https://wa.me/${config.whatsapp_link}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary"
-                >
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  {config.whatsapp ?? 'WhatsApp'}
-                </a>
-              )}
-              {config.telefone_link && (
-                <a href={`tel:${config.telefone_link}`} className="btn-secondary">
-                  <Phone className="w-4 h-4 mr-2" />
-                  {config.telefone ?? 'Ligar'}
-                </a>
-              )}
-              {config.instagram_url && (
-                <a
-                  href={config.instagram_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-secondary"
-                >
-                  <Instagram className="w-4 h-4 mr-2" />
-                  {config.instagram_handle ?? 'Instagram'}
-                </a>
-              )}
+              <a
+                href={`https://wa.me/${config.whatsapp_link}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                {config.whatsapp}
+              </a>
+              <a href={`tel:${config.telefone_link}`} className="btn-secondary">
+                <Phone className="w-4 h-4 mr-2" />
+                {config.telefone}
+              </a>
+              <a
+                href={config.instagram_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary"
+              >
+                <Instagram className="w-4 h-4 mr-2" />
+                {config.instagram_handle}
+              </a>
             </div>
           </div>
         </div>

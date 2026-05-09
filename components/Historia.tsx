@@ -1,7 +1,7 @@
-import type { ConfigMap } from '@/lib/types'
+import type { SiteConfig } from '@/lib/types'
 
-export default function Historia({ config }: { config: ConfigMap }) {
-  const paragrafos = (config.historia_paragrafos ?? '').split(/\n\s*\n/).filter(Boolean)
+export default function Historia({ config }: { config: SiteConfig }) {
+  const paragrafos = config.historia_paragrafos.split(/\n\s*\n/).filter(Boolean)
   const videoUrl = config.historia_video_url
 
   return (
@@ -11,7 +11,7 @@ export default function Historia({ config }: { config: ConfigMap }) {
           <div>
             <p className="uppercase tracking-[0.3em] text-gold text-xs mb-3">Nossa história</p>
             <h2 className="text-4xl md:text-5xl font-display tracking-wide mb-6">
-              {config.historia_titulo ?? 'A casa do chopp gelado'}
+              {config.historia_titulo}
             </h2>
             <div className="space-y-4 text-bone/80 leading-relaxed">
               {paragrafos.map((p, i) => (
